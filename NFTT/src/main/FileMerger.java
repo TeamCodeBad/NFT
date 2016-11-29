@@ -53,8 +53,8 @@ public class FileMerger {
 	 * @throws IOException
 	 */
 	
-	public void merge() throws IOException{
-		File temp = getFile();
+	public void merge(String filePath) throws IOException{
+		File temp = new File(filePath);
 		String outPutName = JOptionPane.showInputDialog(
                 null, "Enter Output FileName");
 		fileName = outPutName;
