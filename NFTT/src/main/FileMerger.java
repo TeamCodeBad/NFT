@@ -55,10 +55,11 @@ public class FileMerger {
 	
 	public void merge(String filePath) throws IOException{
 		File temp = new File(filePath);
-	/*	String outPutName = JOptionPane.showInputDialog(
+		//filePath " ".001
+		String outPutName = JOptionPane.showInputDialog(
                 null, "Enter Output FileName for incoming file " + filePath );
-		fileName = outPutName;*/
-		mergeFiles(temp.getAbsolutePath(), filePath.replace(".001", ""));
+		fileName = outPutName;
+		mergeFiles(temp.getAbsolutePath(), fileName);
 	}
 	
 	private static File getFile() {
