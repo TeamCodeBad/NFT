@@ -70,6 +70,8 @@ public class Application {
 			File toSend= thing.cipher(fileName);
 			SimpleFileClient sfc = new SimpleFileClient((portNumber+1), ipAddress, toSend);
 			sfc.run();
+			if(c.flip == true){thing.setflip(2);}
+			else{thing.setflip(0);}
 			thing.cipher(toSend);
 		}
 		else{
@@ -81,8 +83,7 @@ public class Application {
 	
 	public static void serverAction() throws IOException {
 		portNumber = fetchPortNumber();
-//		String ipExchange = JOptionPane.showInputDialog(
-//                null, "Enter Other IP");
+
 		Authentication s = new Authentication(portNumber);
 		System.out.println("Listening...");
 		if(s.s_connect(userList)){

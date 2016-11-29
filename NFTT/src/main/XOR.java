@@ -19,7 +19,10 @@ public class XOR {
 		this.state = state;
 	}
 	
-
+	public void setflip(int state){
+		this.state = state;
+	}
+	
 	
 	private byte[] convertFile(File filename) {
 		
@@ -49,28 +52,6 @@ public class XOR {
 	public void setKeys(byte[] key){
 		this.key = key;
 	}
-	
-//	public void cipher(){
-//		int size = message.length;
-//		byte[] new_message = new byte[size];
-//		
-//		for(int i = 0; i < size; i++){
-//			new_message[i] = (byte) (message[i] ^ key[i % key.length]);
-//		}
-//		
-//		try {
-//			PrintWriter pw = new PrintWriter(this.f);
-//			pw.close();
-//			FileOutputStream fos = new FileOutputStream(this.f);
-//			fos.write(new_message);
-//			fos.close();
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//		
-//	}
 	
 	public File cipher(File returnedFile){
 		

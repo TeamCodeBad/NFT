@@ -40,7 +40,7 @@ public class SimpleFileServer {
 		{
 			long fileLength = dis.readLong();
 			String fileName = dis.readUTF();
-
+			System.out.println(fileName);
 			files[i] = new File(dirPath + "/" + fileName);
 
 			FileOutputStream fos = new FileOutputStream(files[i]);
