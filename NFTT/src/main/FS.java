@@ -7,6 +7,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 
+/**
+ * A class to hold data about authorized users and verify if an input login and password
+ * match to the verified users list.
+ */
 public class FS {
 	private HashMap<String, String> hm;
 
@@ -21,7 +25,6 @@ public class FS {
 				hm.put(userNPass[0], userNPass[1]);
 				uP = br.readLine();
 			}
-
 			br.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -37,5 +40,4 @@ public class FS {
 		}
 		return f;
 	}
-	
 }

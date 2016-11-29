@@ -1,29 +1,20 @@
 package main;
 
 import java.io.*;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
-
-import javax.swing.JFileChooser;
 
 public class SimpleFileServer {
 
-	private int SOCKET_PORT;	 	// ie:8080
-	private String FILE_TO_SEND;	// name of file to send. May be full path.
-	private File ActualFile;
+	private int SOCKET_PORT;
 	FileMerger fm = new FileMerger();
 	FileSplitter fs = new FileSplitter();
-	private String ipAddress;
 	private String fileName;
 	private boolean flip;
-	//count
 
 	public SimpleFileServer(int portNumber, boolean flip) {
 		this.SOCKET_PORT = portNumber;
 		this.flip = flip;
-
 	}
 
 	public void get() throws IOException{
@@ -81,7 +72,6 @@ public class SimpleFileServer {
 	}
 
 	public void run() throws IOException {
-	
 		get();
 		fm.merge(fileName);
 		
@@ -94,6 +84,5 @@ public class SimpleFileServer {
 		}
 		String cs = new CheckSum(cipherFile).checkSum();
 		System.out.println("Confirm this checksum with the intial checksum " + cs);
-
 	}
 }

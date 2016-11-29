@@ -33,7 +33,7 @@ public class FileSplitter {
                 												 //with .00x as a file extension
                 												//stored where u chose the file
                 try (FileOutputStream out = new FileOutputStream(newFile)) {
-                    out.write(buffer, 0, tmp);//tmp is chunk size
+                    out.write(buffer, 0, tmp);					//tmp is chunk size
                 }
             }
         }

@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 
 public class Application {
 	
@@ -62,16 +61,21 @@ public class Application {
 			File fileName = c.fileName;
 			
 			XOR thing;
-			if(c.flip == true){
+			if (c.flip == true) {
 				thing = new XOR(1);
-			}else{
-				thing = new XOR(0);	
+			} else {
+				thing = new XOR(0);
 			}
 			File toSend= thing.cipher(fileName);
 			SimpleFileClient sfc = new SimpleFileClient((portNumber+1), ipAddress, toSend);
 			sfc.run();
-			if(c.flip == true){thing.setflip(2);}
-			else{thing.setflip(0);}
+			
+			// This is to fix the file on client side
+			if (c.flip == true) {
+				thing.setflip(2);
+			} else {
+				thing.setflip(0);
+			}
 			thing.cipher(toSend);
 		}
 		else{
