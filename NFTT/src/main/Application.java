@@ -6,12 +6,13 @@ import java.util.Scanner;
 import javax.swing.JFileChooser;
 
 public class Application {
-	
+
 	public static FS userList = new FS(new File("Authorizedusers.txt"));
 	public static boolean isTerminated = false;
 	public static Scanner k = new Scanner(System.in);
 	public static int portNumber = 8080;
 	public static String ipAddress = "1.1.1.1";
+
 	public static void main(String[] args) throws IOException {
 		System.out.println("File Transfer Tool!\nEnter your position below!");
 		String command = "";
@@ -26,9 +27,9 @@ public class Application {
 		} while (isTerminated != true);
 		k.close();
 	}
-	
+
 	public static void action(String input) throws IOException {
-		switch(input) {
+		switch (input) {
 		case "client":
 		case "1":
 			System.out.println("Client Mode");
@@ -49,7 +50,7 @@ public class Application {
 			break;
 		}
 	}
-	
+
 	public static void clientAction() throws IOException {
 		portNumber = fetchPortNumber();
 		ipAddress = fetchIPAddress();
@@ -57,19 +58,22 @@ public class Application {
 		System.out.println("'Username:Password'");
 		String request = k.nextLine();
 		Authentication c = new Authentication(ipAddress, portNumber);
-		if(c.c_connect(request)){
+		if (c.c_connect(request)) {
 			File fileName = c.fileName;
-			
+
 			XOR thing;
 			if (c.flip == true) {
+				// ASCII Armor if state = 1, otherwise no.
 				thing = new XOR(1);
 			} else {
 				thing = new XOR(0);
 			}
-			File toSend= thing.cipher(fileName);
-			SimpleFileClient sfc = new SimpleFileClient((portNumber+1), ipAddress, toSend);
-			sfc.run();
 			
+			// Pass in the file that has been XOR/Encoded
+			File toSend = thing.cipher(fileName);
+			SimpleFileClient sfc = new SimpleFileClient((portNumber + 1), ipAddress, toSend);
+			sfc.run();
+
 			// This is to fix the file on client side
 			if (c.flip == true) {
 				thing.setflip(2);
@@ -77,30 +81,27 @@ public class Application {
 				thing.setflip(0);
 			}
 			thing.cipher(toSend);
-		}
-		else{
+		} else {
 			System.out.println("Connection Terminated");
 		}
-		
+
 	}
 
-	
 	public static void serverAction() throws IOException {
 		portNumber = fetchPortNumber();
 
 		Authentication s = new Authentication(portNumber);
 		System.out.println("Listening...");
-		if(s.s_connect(userList)){
-			
-			SimpleFileServer sfs = new SimpleFileServer((portNumber+1), s.flip);
+		if (s.s_connect(userList)) {
+
+			SimpleFileServer sfs = new SimpleFileServer((portNumber + 1), s.flip);
 			sfs.run();
-		}
-		else{
+		} else {
 			System.out.println("Connection is Terminated");
 		}
 
 	}
-	
+
 	public static String fetchIPAddress() {
 		System.out.println("Enter Server's ipv4 address: ");
 		String ipAddress = null;
@@ -120,7 +121,7 @@ public class Application {
 						}
 						// Verify that the octets are actual numbers
 						char[] octetCharacters = octet.toCharArray();
-						for (char c: octetCharacters) {
+						for (char c : octetCharacters) {
 							if (c > '9' || c < '0') {
 								continue verificationProcess;
 							}
@@ -139,7 +140,7 @@ public class Application {
 		}
 		return ipAddress;
 	}
-	
+
 	public static int fetchPortNumber() {
 		System.out.println("Specify the port number: ");
 		int portNumber = -1;
@@ -154,7 +155,7 @@ public class Application {
 		}
 		return portNumber;
 	}
-	
+
 	public static File getFile(String message) {
 		JFileChooser chooser = new JFileChooser();
 		chooser.setCurrentDirectory(new java.io.File("."));

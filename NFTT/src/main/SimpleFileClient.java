@@ -14,7 +14,7 @@ public class SimpleFileClient {
 	static String directory = System.getProperty("user.dir");
 	FileSplitter fs = new FileSplitter();
 	FileMerger fm = new FileMerger();
-	File toSend;
+	File toSend; //Already XOR/Encoded
 
 	public SimpleFileClient(int portNumber, String ipAddress, File toSend) {
 		this.address = ipAddress;
@@ -26,20 +26,21 @@ public class SimpleFileClient {
 		switch (input) {
 		case "1":
 			// SUCCESS SEND
-			send(listOfFiles, true);
+			send(listOfFiles, 0);
 			break;
 		case "2":
-			send(listOfFiles, false);
+			send(listOfFiles, 1);
 			// Some failures but SUCCESS SEND
 			break;
 		case "3":
-			// Complete Failure -> fail to send
+			send(listOfFiles, -1);
+			// Complete Failure -> fail to send. Too many retries for corrupted files. Terminate.
 			// TODO: DO THIS THING
 			break;
 		}
 	}
 
-	public void send(File[] files, boolean willScramble) throws IOException {
+	public void send(File[] files, int numberOfScrambles) throws IOException {
 
 		Socket socket = new Socket(this.address, this.port);
 
@@ -53,7 +54,7 @@ public class SimpleFileClient {
 		 */
 
 		dos.writeInt(files.length);
-		boolean doOnce = willScramble;
+		int scrambles = numberOfScrambles;
 
 		// for(File file : files)
 		/**
@@ -61,6 +62,11 @@ public class SimpleFileClient {
 		 * write are parallel to where the reader is in simple file server
 		 */
 		// String serverSum;
+		
+		// This is where the Server and Client Sync
+		// Client needs to Send the data to Server
+		// Server needs to verify the data was not changed
+		// If it is, request to send same chunk again
 		for (int i = 0; i < files.length; i++) {
 			// Checksum
 			// serverSum = new CheckSum(files[i]).checkSum();
@@ -83,15 +89,14 @@ public class SimpleFileClient {
 			 * -1 for EOF
 			 */
 			while ((theByte = bis.read()) != -1) {
-				// doOnce used in BAD SCENARIO
-				if (i == 0 && (doOnce == false)) {
+				// scrambles used in BAD SCENARIO
+				if (i == 0 && (scrambles != 0)) {
 					theByte += 1;
-					doOnce = true;
+					scrambles--;
 				}
 				// Finally, write the single byte data in
 				bos.write(theByte);
 			}
-
 			bis.close();
 		}
 		dos.close();
@@ -103,9 +108,10 @@ public class SimpleFileClient {
 		String pathname = toSend.getAbsolutePath() + ".001";
 		fs.splitFile(toSend);
 		// toList = getFile();
+		// listOfFiles will contain all the XOR/Encoded split files
 		listOfFiles = fm.listOfFiles(new File(pathname)/* toList */);
 
-		// Here we split the options
+		// Here we provide the user demo options
 		Scanner g = new Scanner(System.in);
 		System.out.println(
 				"Which test case? Enter 1-3 ONLY. \n1. Success\n2. Some failure but sent\n3. Complete Failure");

@@ -56,6 +56,7 @@ public class XOR {
 		int size = message.length;
 		byte[] new_message = new byte[size];
 
+		// When is state = 2?
 		if (state == 2) {
 			new_message = new ArmorCoder().decodedManyChunks(message);
 			message = new_message;

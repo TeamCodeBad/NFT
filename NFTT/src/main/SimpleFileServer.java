@@ -17,7 +17,7 @@ public class SimpleFileServer {
 		this.flip = flip;
 	}
 
-	public void get() throws IOException{
+	public void get() throws IOException {
 
 		String dirPath = System.getProperty("user.dir");
 		ServerSocket serverSocket = new ServerSocket(this.SOCKET_PORT);
@@ -25,24 +25,28 @@ public class SimpleFileServer {
 
 		BufferedInputStream bis = new BufferedInputStream(socket.getInputStream());
 		DataInputStream dis = new DataInputStream(bis);
-		
-		
-		/*InputStream is = socket.getInputStream();
-		InputStreamReader isw = new InputStreamReader(is);
-		BufferedReader br = new BufferedReader(isw);*/
-		
+
+		/*
+		 * InputStream is = socket.getInputStream(); InputStreamReader isw = new
+		 * InputStreamReader(is); BufferedReader br = new BufferedReader(isw);
+		 */
 
 		int filesCount = dis.readInt();
 		File[] files = new File[filesCount];
 		/**
-		 * Make sure the reader matches where the writer is in simple file client
+		 * Make sure the reader matches where the writer is in simple file
+		 * client
 		 */
-		/*String clientSum;
-		String serverSum;
-		*/
-		for(int i = 0; i < filesCount; i++)
-		{
-			
+		/*
+		 * String clientSum; String serverSum;
+		 */
+		
+		// This is where the Server and Client Sync
+		// Client needs to Send the data to Server
+		// Server needs to verify the data was not changed
+		// If it is, request to send same chunk again
+		for (int i = 0; i < filesCount; i++) {
+
 			long fileLength = dis.readLong();
 			fileName = dis.readUTF();
 			files[i] = new File(dirPath + "/" + fileName);
@@ -50,21 +54,21 @@ public class SimpleFileServer {
 			FileOutputStream fos = new FileOutputStream(files[i]);
 			BufferedOutputStream bos = new BufferedOutputStream(fos);
 			/**
-			 * This loop reads the small bytes and adds them into that small sub file and writes
-			 * the small sub file in the local directory
+			 * This loop reads the small bytes and adds them into that small sub
+			 * file and writes the small sub file in the local directory
 			 */
-			
-			for(int j = 0; j < fileLength; j++){
-				bos.write( bis.read() );
+
+			for (int j = 0; j < fileLength; j++) {
+				bos.write(bis.read());
 			}
-			
-			//checksum from received chunk files
-/*			serverSum = new CheckSum(files[i]).checkSum();
-			if(clientSum.equals(serverSum)){
-				
-				System.out.println("[SENT] Confirmed Chunk "+ i);
-			}
-*/
+
+			// checksum from received chunk files
+			/*
+			 * serverSum = new CheckSum(files[i]).checkSum();
+			 * if(clientSum.equals(serverSum)){
+			 * 
+			 * System.out.println("[SENT] Confirmed Chunk "+ i); }
+			 */
 			bos.close();
 		}
 
@@ -74,12 +78,12 @@ public class SimpleFileServer {
 	public void run() throws IOException {
 		get();
 		fm.merge(fileName);
-		
+
 		File returnedFile = new File(fm.fileName);
 		File cipherFile;
-		if(flip == true){
+		if (flip == true) {
 			cipherFile = new XOR(2).cipher(returnedFile);
-		}else{
+		} else {
 			cipherFile = new XOR(0).cipher(returnedFile);
 		}
 		String cs = new CheckSum(cipherFile).checkSum();
