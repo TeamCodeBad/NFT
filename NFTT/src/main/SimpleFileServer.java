@@ -45,10 +45,12 @@ public class SimpleFileServer {
 		/**
 		 * Make sure the reader matches where the writer is in simple file client
 		 */
+		String clientSum;
+		String serverSum;
 		for(int i = 0; i < filesCount; i++)
 		{
 			//checksum given before sent
-			String clientSum = br.readLine();
+			clientSum = br.readLine();
 			
 			long fileLength = dis.readLong();
 			fileName = dis.readUTF();
@@ -65,7 +67,7 @@ public class SimpleFileServer {
 			}
 			
 			//checksum from received chunk files
-			String serverSum = new CheckSum(files[i]).checkSum();
+			serverSum = new CheckSum(files[i]).checkSum();
 			if(clientSum.equals(serverSum)){
 				
 				System.out.println("[SENT] Confirmed Chunk "+ i);
