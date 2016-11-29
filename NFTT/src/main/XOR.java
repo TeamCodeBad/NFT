@@ -15,7 +15,7 @@ public class XOR {
 	
 	XOR(int state){
 		System.out.println("Select Key for Ciphyer");
-		this.key = convertFile(Application.getFile());
+		this.key = convertFile(Application.getFile("Select the key file to use"));
 		this.state = state;
 	}
 	

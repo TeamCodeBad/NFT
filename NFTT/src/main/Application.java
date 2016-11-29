@@ -151,11 +151,10 @@ public class Application {
 		return portNumber;
 	}
 	
-	public static File getFile() {
-		System.out.println("Select a file with the window:");
+	public static File getFile(String message) {
 		JFileChooser chooser = new JFileChooser();
 		chooser.setCurrentDirectory(new java.io.File("."));
-		chooser.setDialogTitle("Upload File");
+		chooser.setDialogTitle(message);
 		chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		chooser.setAcceptAllFileFilterUsed(false);
 		if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {

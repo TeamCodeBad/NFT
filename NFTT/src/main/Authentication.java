@@ -119,7 +119,7 @@ public class Authentication {
 	            
 	            
 	            if(message.indexOf("Verified") != -1){
-	            	this.fileName = Application.getFile(); 	
+	            	this.fileName = Application.getFile("Select the file to upload"); 	
 		        	String checksumFile = new CheckSum(fileName).checkSum() + "\n";
 		        	System.out.println("Checksum for selected File: " + checksumFile);
 		        	 //OutputStream os1 = socket.getOutputStream();
