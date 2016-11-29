@@ -34,10 +34,11 @@ public class SimpleFileServer {
 
 		BufferedInputStream bis = new BufferedInputStream(socket.getInputStream());
 		DataInputStream dis = new DataInputStream(bis);
+		BufferedReader br = new BufferedReader(bis);
 		
-		InputStream is = socket.getInputStream();
+		/*InputStream is = socket.getInputStream();
 		InputStreamReader isw = new InputStreamReader(is);
-		BufferedReader br = new BufferedReader(isw);
+		BufferedReader br = new BufferedReader(isw);*/
 		
 
 		int filesCount = dis.readInt();
@@ -50,8 +51,6 @@ public class SimpleFileServer {
 		*/
 		for(int i = 0; i < filesCount; i++)
 		{
-			//checksum given before sent
-			System.out.println(br.readLine());
 			
 			long fileLength = dis.readLong();
 			fileName = dis.readUTF();
@@ -63,6 +62,7 @@ public class SimpleFileServer {
 			 * This loop reads the small bytes and adds them into that small sub file and writes
 			 * the small sub file in the local directory
 			 */
+			
 			for(int j = 0; j < fileLength; j++){
 				bos.write( bis.read() );
 			}

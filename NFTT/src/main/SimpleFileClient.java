@@ -54,9 +54,9 @@ public class SimpleFileClient {
 		BufferedOutputStream bos = new BufferedOutputStream(socket.getOutputStream());
 		DataOutputStream dos = new DataOutputStream(bos);
 		
-		OutputStream os = socket.getOutputStream();
+/*		OutputStream os = socket.getOutputStream();
 		OutputStreamWriter osw = new OutputStreamWriter(os);
-		BufferedWriter bw = new BufferedWriter(osw);
+		BufferedWriter bw = new BufferedWriter(osw);*/
 
 		dos.writeInt(files.length);
 		boolean doOnce = willScramble;
