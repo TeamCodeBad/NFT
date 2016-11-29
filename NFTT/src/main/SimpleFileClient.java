@@ -70,6 +70,9 @@ public class SimpleFileClient {
 		{
 			//Checksum
 			String serverSum = new CheckSum(files[i]).checkSum();
+			bw.write(serverSum);
+			bw.flush();
+
 			
 			long length = files[i].length();
 			dos.writeLong(length);
@@ -93,9 +96,6 @@ public class SimpleFileClient {
 				bos.write(theByte);
 			}
 			
-			bw.write(serverSum);
-			bw.flush();
-
 			bis.close();
 		}
 		dos.close();

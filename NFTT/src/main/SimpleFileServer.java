@@ -47,6 +47,8 @@ public class SimpleFileServer {
 		 */
 		for(int i = 0; i < filesCount; i++)
 		{
+			//checksum given before sent
+			String clientSum = br.readLine();
 			
 			long fileLength = dis.readLong();
 			fileName = dis.readUTF();
@@ -61,8 +63,6 @@ public class SimpleFileServer {
 			for(int j = 0; j < fileLength; j++){
 				bos.write( bis.read() );
 			}
-			//checksum given before sent
-			String clientSum = br.readLine();
 			
 			//checksum from received chunk files
 			String serverSum = new CheckSum(files[i]).checkSum();
