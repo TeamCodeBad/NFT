@@ -34,7 +34,7 @@ public class SimpleFileServer {
 
 		BufferedInputStream bis = new BufferedInputStream(socket.getInputStream());
 		DataInputStream dis = new DataInputStream(bis);
-		BufferedReader br = new BufferedReader(bis);
+		
 		
 		/*InputStream is = socket.getInputStream();
 		InputStreamReader isw = new InputStreamReader(is);
