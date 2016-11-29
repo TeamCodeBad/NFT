@@ -54,6 +54,9 @@ public class SimpleFileClient {
 		 */
 
 		dos.writeInt(files.length);
+		
+		//TODO: scrambles should technically scramble 1 byte per send of a chunk
+		// As it is now, it is only scrambling n times for only 1 chunk
 		int scrambles = numberOfScrambles;
 
 		// for(File file : files)
