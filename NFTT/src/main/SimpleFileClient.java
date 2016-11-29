@@ -66,14 +66,14 @@ public class SimpleFileClient {
 		 * For sending files through the BufferedWriter make sure the read and write
 		 * are parallel to where the reader is in simple file server
 		 */
-		String serverSum;
+		//String serverSum;
 		for (int i = 0; i < files.length; i++)
 		{
 			//Checksum
-			serverSum = new CheckSum(files[i]).checkSum();
-			bw.write(serverSum);
+			//serverSum = new CheckSum(files[i]).checkSum();
+			/*bw.write(serverSum);
 			bw.flush();
-
+*/
 			
 			long length = files[i].length();
 			dos.writeLong(length);
