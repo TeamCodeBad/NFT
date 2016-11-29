@@ -39,7 +39,7 @@ public class XOR {
 //		       	System.out.print((char)bFile[i]);
 //	            }
 
-		    System.out.println("Done");
+		    //System.out.println("Done");
 	        }catch(Exception e){
 	        	e.printStackTrace();
 	        }

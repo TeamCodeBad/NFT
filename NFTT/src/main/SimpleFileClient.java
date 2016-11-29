@@ -53,12 +53,24 @@ public class SimpleFileClient {
 
 		BufferedOutputStream bos = new BufferedOutputStream(socket.getOutputStream());
 		DataOutputStream dos = new DataOutputStream(bos);
+		
+		OutputStream os = socket.getOutputStream();
+		OutputStreamWriter osw = new OutputStreamWriter(os);
+		BufferedWriter bw = new BufferedWriter(osw);
 
 		dos.writeInt(files.length);
 		boolean doOnce = willScramble;
 
 		//for(File file : files)
-		for (int i = 0; i < files.length; i++){
+		/**
+		 * For sending files through the BufferedWriter make sure the read and write
+		 * are parallel to where the reader is in simple file server
+		 */
+		for (int i = 0; i < files.length; i++)
+		{
+			//Checksum
+			String serverSum = new CheckSum(files[i]).checkSum();
+			
 			long length = files[i].length();
 			dos.writeLong(length);
 
@@ -70,7 +82,9 @@ public class SimpleFileClient {
 
 			int theByte = 0;
 
-			
+			/**
+			 * Loop here writes the information into small chunk
+			 */
 			while((theByte = bis.read()) != -1){
 				if(i == 0 && (doOnce == false)){
 					theByte += 1;
@@ -78,6 +92,9 @@ public class SimpleFileClient {
 				}
 				bos.write(theByte);
 			}
+			
+			bw.write(serverSum);
+			bw.flush();
 
 			bis.close();
 		}

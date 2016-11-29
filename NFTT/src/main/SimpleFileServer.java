@@ -18,6 +18,7 @@ public class SimpleFileServer {
 	private String ipAddress;
 	private String fileName;
 	private boolean flip;
+	//count
 
 	public SimpleFileServer(int portNumber, boolean flip) {
 		this.SOCKET_PORT = portNumber;
@@ -33,20 +34,42 @@ public class SimpleFileServer {
 
 		BufferedInputStream bis = new BufferedInputStream(socket.getInputStream());
 		DataInputStream dis = new DataInputStream(bis);
+		
+		InputStream is = socket.getInputStream();
+		InputStreamReader isw = new InputStreamReader(is);
+		BufferedReader br = new BufferedReader(isw);
+		
 
 		int filesCount = dis.readInt();
 		File[] files = new File[filesCount];
-
+		/**
+		 * Make sure the reader matches where the writer is in simple file client
+		 */
 		for(int i = 0; i < filesCount; i++)
 		{
+			
 			long fileLength = dis.readLong();
 			fileName = dis.readUTF();
 			files[i] = new File(dirPath + "/" + fileName);
 
 			FileOutputStream fos = new FileOutputStream(files[i]);
 			BufferedOutputStream bos = new BufferedOutputStream(fos);
-
-			for(int j = 0; j < fileLength; j++) bos.write(bis.read());
+			/**
+			 * This loop reads the small bytes and adds them into that small sub file and writes
+			 * the small sub file in the local directory
+			 */
+			for(int j = 0; j < fileLength; j++){
+				bos.write( bis.read() );
+			}
+			//checksum given before sent
+			String clientSum = br.readLine();
+			
+			//checksum from received chunk files
+			String serverSum = new CheckSum(files[i]).checkSum();
+			if(clientSum.equals(serverSum)){
+				
+				System.out.println("[SENT] Confirmed Chunk "+files[i].getTotalSpace());
+			}
 
 			bos.close();
 		}
