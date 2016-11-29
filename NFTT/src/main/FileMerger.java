@@ -58,7 +58,7 @@ public class FileMerger {
 		String outPutName = JOptionPane.showInputDialog(
                 null, "Enter Output FileName for incoming file " + filePath );
 		fileName = outPutName;
-		mergeFiles(temp.getAbsolutePath(), filePath);
+		mergeFiles(temp.getAbsolutePath(), fileName);
 	}
 	
 	private static File getFile() {
