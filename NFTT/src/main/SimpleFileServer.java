@@ -68,7 +68,7 @@ public class SimpleFileServer {
 			String serverSum = new CheckSum(files[i]).checkSum();
 			if(clientSum.equals(serverSum)){
 				
-				System.out.println("[SENT] Confirmed Chunk "+files[i].getTotalSpace());
+				System.out.println("[SENT] Confirmed Chunk "+ i);
 			}
 
 			bos.close();
