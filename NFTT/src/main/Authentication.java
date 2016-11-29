@@ -64,16 +64,16 @@ public class Authentication {
 	            
 	            //change
 	            //InputStream is1 = socket.getInputStream();
-	            InputStreamReader isr1 = new InputStreamReader(is);
-	            BufferedReader br1 = new BufferedReader(isr1);
-	            String checkSum = br1.readLine();
+	            //InputStreamReader isr1 = new InputStreamReader(is);
+	            //BufferedReader br1 = new BufferedReader(isr1);
+	            String checkSum = br.readLine();
 	            if(checkSum != null){
 	            	System.out.println("Checksum for the file before submission: " + checkSum);
 	            }
 	            
-	            InputStreamReader isr2 = new InputStreamReader(is);
-	            BufferedReader br2 = new BufferedReader(isr2);
-	            String response = br2.readLine();
+	            //InputStreamReader isr2 = new InputStreamReader(is);
+	            //BufferedReader br2 = new BufferedReader(isr2);
+	            String response = br.readLine();
 	            if(response.equalsIgnoreCase("Y")){
 	            	flip = true;
 	            }else{
@@ -123,17 +123,17 @@ public class Authentication {
 		        	String checksumFile = new CheckSum(fileName).checkSum() + "\n";
 		        	System.out.println("Checksum for selected File: " + checksumFile);
 		        	 //OutputStream os1 = socket.getOutputStream();
-		            OutputStreamWriter osw1 = new OutputStreamWriter(os);
-		            BufferedWriter bw1 = new BufferedWriter(osw1);
-		            bw1.write(checksumFile);
-		            bw1.flush();
+		            //OutputStreamWriter osw1 = new OutputStreamWriter(os);
+		            //BufferedWriter bw1 = new BufferedWriter(osw1);
+		            bw.write(checksumFile);
+		            bw.flush();
 		            
 		            System.out.println("Would you like to ascii armor the file? Y/N");
 		            String response = kb.next();
-		            OutputStreamWriter osw2 = new OutputStreamWriter(os);
-		            BufferedWriter bw2 = new BufferedWriter(osw2);
-		            bw2.write(response);
-		            bw2.flush();
+		            //OutputStreamWriter osw2 = new OutputStreamWriter(os);
+		            //BufferedWriter bw2 = new BufferedWriter(osw2);
+		            bw.write(response);
+		            bw.flush();
 		            if(response.equalsIgnoreCase("Y")){
 		            	flip = true;
 		            }else{

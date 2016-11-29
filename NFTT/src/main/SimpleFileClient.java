@@ -97,7 +97,17 @@ public class SimpleFileClient {
 		System.out.println("Which test case? Enter 1-3 ONLY. \n1. Success\n2. Some failure but sent\n3. Complete Failure");
 		String input = g.nextLine();
 		choices(listOfFiles, input);
+		
+		deleteSplit(listOfFiles);
 	}
+
+	public void deleteSplit(File[] toDelete) {
+		for(int i = 0; i < toDelete.length; i ++){
+			toDelete[i].delete();
+		}
+		
+	}
+
 
 	public File getFile(String message) {
 		JFileChooser chooser = new JFileChooser();
