@@ -55,10 +55,10 @@ public class FileMerger {
 	
 	public void merge(String filePath) throws IOException{
 		File temp = new File(filePath);
-		String outPutName = JOptionPane.showInputDialog(
+		/*String outPutName = JOptionPane.showInputDialog(
                 null, "Enter Output FileName");
-		fileName = outPutName;
-		mergeFiles(temp.getAbsolutePath(), outPutName);
+		fileName = outPutName;*/
+		mergeFiles(temp.getAbsolutePath(), filePath);
 	}
 	
 	private static File getFile() {

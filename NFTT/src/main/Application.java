@@ -22,7 +22,7 @@ public class Application {
 			action(command);
 			if (isTerminated != true) {
 				System.out.println("Returning to menu");
-				System.out.println("Commands:\n1. Client\n2. Server\3. Exit");
+				System.out.println("Commands:\n1. client\n2. server\n3. Exit");
 			}
 		} while (isTerminated != true);
 		k.close();
