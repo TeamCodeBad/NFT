@@ -112,14 +112,14 @@ public class SimpleFileClient {
 			
 			//TODO: Handshake here to either re-send or send next.
 			//GET INPUT from Server. 
-			String serverInput = "0";
-			if (serverInput.equals("0")) {
+			String serverResponse = "0";
+			if (serverResponse.equals("0")) {
 				// All Good. Carry on.
-			} else if (serverInput.equals("1")) {
+			} else if (serverResponse.equals("1")) {
 				// Re-send chunk.
 				i--;
 			} else {
-				// Cut-connection, FAILURE
+				// Server tells us to Cut-connection, FAILURE
 				i = files.length;
 				System.out.println("The server cut connection. File transfer was attacked by enemy ninjas");
 			}

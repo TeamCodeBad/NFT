@@ -19,7 +19,7 @@ public class SimpleFileServer {
 
 	public void get() throws IOException {
 
-		int numberOfRetry = 3;
+		int totalRetryAttempts = 3;
 		String dirPath = System.getProperty("user.dir");
 		ServerSocket serverSocket = new ServerSocket(this.SOCKET_PORT);
 		Socket socket = serverSocket.accept();
@@ -49,8 +49,7 @@ public class SimpleFileServer {
 		for (int i = 0; i < filesCount; i++) {
 			String serverSum = "temp value";
 			String clientSum = "another temp value";
-			int attempts = 0;
-
+			
 			while(!(serverSum.equals(clientSum))){
 				long fileLength = dis.readLong();
 				fileName = dis.readUTF();
@@ -89,18 +88,16 @@ public class SimpleFileServer {
 			
 			//TODO: Handshake here to either re-send or send next.
 			//SEND RESPONSE from Server. 
-			String serverResponse = "0";
-			CheckSum afterHash = new CheckSum(files[i]);
-			CheckSum initialHash = null;
+			serverSum = new CheckSum(files[i]).checkSum();
 			
-			if (afterHash.checkSum().equals(initialHash.checkSum())) {
+			if (serverSum.equals(clientSum)) {
 				// All Good. Carry on.
-			} else if (numberOfRetry != 0) {
-				// Re-send chunk.
-				// numberOfRetry--;
+			} else if (totalRetryAttempts != 0) {
+				// Ask to Re-send chunk.
+				// totalRetryAttempts--;
 				// i--;
 			} else {
-				// Cut-connection, FAILURE
+				// Send a non "0"/"1" response to client. Cut-connection, FAILURE
 				i = files.length;
 				System.out.println("The server cut connection. File transfer was attacked by enemy ninjas");
 			}
