@@ -66,34 +66,6 @@ public class SimpleFileServer {
 					bos.write(bis.read());
 				}
 
-				//SENDING CHECKSUM STARTS HERE
-
-				serverSum = new CheckSum(files[i]).checkSum();
-
-				OutputStream os = socket.getOutputStream();
-				OutputStreamWriter osw = new OutputStreamWriter(os);
-				BufferedWriter bw = new BufferedWriter(osw);
-				bw.write(serverSum);
-				bw.flush();
-
-
-				//SENDING CHECKSUM ENDS HERE
-
-				
-				//RECIEVE CLIENT CHECKSUM STARTS HERE
-				
-				InputStream is = socket.getInputStream();
-				InputStreamReader isr = new InputStreamReader(is);
-				BufferedReader br = new BufferedReader(isr);
-				clientSum = br.readLine();
-				
-				//RECIEVE CLIENT CHECKSUM ENDS HERE
-				
-				attempts++;
-				
-				System.out.println("ServerSum = "+ serverSum);
-				System.out.println("ClientSum = "+ clientSum);
-				
 				// checksum from received chunk files
 				/*
 				 * serverSum = new CheckSum(files[i]).checkSum();
@@ -104,11 +76,6 @@ public class SimpleFileServer {
 				
 				
 				bos.close();
-				
-				if(attempts > 3){
-					System.out.println("Max attempts reached, closing connection");
-					System.exit(0);
-				}
 			}
 		}
 
