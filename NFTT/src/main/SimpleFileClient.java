@@ -33,7 +33,7 @@ public class SimpleFileClient {
 			// Some failures but SUCCESS SEND
 			break;
 		case "3":
-			send(listOfFiles, -1);
+			send(listOfFiles, 4);
 			// Complete Failure -> fail to send. Too many retries for corrupted files. Terminate.
 			// TODO: DO THIS THING
 			break;
@@ -75,40 +75,34 @@ public class SimpleFileClient {
 			// serverSum = new CheckSum(files[i]).checkSum();
 			// bw.write(serverSum); bw.flush();
 
-			String serverSum = "temp string";
-			String clientSum = "another temp string";
-			int attempts = 0;
+			String checkSumBeforeSend = "temp string";
 
-			while(!(serverSum.equals(clientSum))){
+			long length = files[i].length();
+			dos.writeLong(length);
 
-				long length = files[i].length();
-				dos.writeLong(length);
+			String name = files[i].getName();
+			dos.writeUTF(name);
 
-				String name = files[i].getName();
-				dos.writeUTF(name);
+			FileInputStream fis = new FileInputStream(files[i]);
+			BufferedInputStream bis = new BufferedInputStream(fis);
 
-				FileInputStream fis = new FileInputStream(files[i]);
-				BufferedInputStream bis = new BufferedInputStream(fis);
+			// Used to write 1 byte value at a time
+			int theByte = 0;
 
-				// Used to write 1 byte value at a time
-				int theByte = 0;
-
-				/**
-				 * Loop here writes the information into small chunk until it reads
-				 * -1 for EOF
-				 */
-				while ((theByte = bis.read()) != -1) {
-					// scrambles used in BAD SCENARIO
-					if (i == 0 && (scrambles != 0)) {
-						theByte += 1;
-						scrambles--;
-					}
-					// Finally, write the single byte data in
-					bos.write(theByte);
+			/**
+			 * Loop here writes the information into small chunk until it reads
+			 * -1 for EOF
+			 */
+			while ((theByte = bis.read()) != -1) {
+				// scrambles used in BAD SCENARIO
+				if (i == 0 && (scrambles != 0)) {
+					theByte += 1;
+					scrambles--;
 				}
-				bis.close();
-				
+				// Finally, write the single byte data in
+				bos.write(theByte);
 			}
+			bis.close();
 			
 			//TODO: Handshake here to either re-send or send next.
 			//GET INPUT from Server. 

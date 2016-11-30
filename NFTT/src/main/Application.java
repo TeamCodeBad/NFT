@@ -95,7 +95,6 @@ public class Application {
 		Authentication s = new Authentication(portNumber);
 		System.out.println("Listening...");
 		if (s.s_connect(userList)) {
-
 			SimpleFileServer sfs = new SimpleFileServer((portNumber + 1), s.flip);
 			sfs.run();
 			fun();

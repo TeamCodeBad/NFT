@@ -47,8 +47,8 @@ public class SimpleFileServer {
 		// Server needs to verify the data was not changed
 		// If it is, request to send same chunk again
 		for (int i = 0; i < filesCount; i++) {
-			String serverSum = "temp value";
-			String clientSum = "another temp value";
+			String serverSum = "Calculate this Right after Getting File";
+			String clientSum = "Client sends this with the chunks";
 			
 			while(!(serverSum.equals(clientSum))){
 				long fileLength = dis.readLong();
