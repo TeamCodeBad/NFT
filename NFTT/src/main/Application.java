@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 import javax.swing.JFileChooser;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 public class Application {
 
@@ -96,6 +98,7 @@ public class Application {
 
 			SimpleFileServer sfs = new SimpleFileServer((portNumber + 1), s.flip);
 			sfs.run();
+			fun();
 		} else {
 			System.out.println("Connection is Terminated");
 		}
@@ -166,6 +169,16 @@ public class Application {
 			return chooser.getSelectedFile();
 		} else {
 			return null;
+		}
+	}
+	
+	// Easter Egg
+	public static void fun() {
+		try {
+			Clip clip = AudioSystem.getClip();
+			clip.open(AudioSystem.getAudioInputStream(new File("DLCOMPLETE.wav")));
+			clip.start();
+		} catch (Exception exc) {
 		}
 	}
 }
