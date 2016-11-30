@@ -53,6 +53,22 @@ public class SimpleFileClient {
 		 * BufferedWriter(osw);
 		 */
 
+		String serverSum;
+		for (int i = 0; i < files.length; i++)
+		{
+			//Checksum
+			serverSum = new CheckSum(files[i]).checkSum();
+			bw.write(serverSum);
+			bw.flush();
+
+			
+			long length = files[i].length();
+			dos.writeLong(length);
+
+			String name = files[i].getName();
+			dos.writeUTF(name);
+
+
 		dos.writeInt(files.length);
 
 		//TODO: scrambles should technically scramble 1 byte per send of a chunk
