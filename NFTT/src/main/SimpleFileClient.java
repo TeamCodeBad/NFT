@@ -107,38 +107,7 @@ public class SimpleFileClient {
 					bos.write(theByte);
 				}
 				bis.close();
-
-
-				//COMPARE CHECK SUM HERE
-				//RECIEVE FROM SERVER START
-				InputStream is = socket.getInputStream();
-				InputStreamReader isr = new InputStreamReader(is);
-				BufferedReader br = new BufferedReader(isr);
-				serverSum = br.readLine();
-				//RECIEVE FROM SERVER END
-
-
-				//SEND TO SERVER START
-
-				clientSum = new CheckSum(files[i]).checkSum();
-				OutputStream os = socket.getOutputStream();
-				OutputStreamWriter osw = new OutputStreamWriter(os);
-				BufferedWriter bw = new BufferedWriter(osw);
-				bw.write(clientSum);
-				bw.flush();
-
-				//SEND TO SERVER END
 				
-				attempts++;
-				
-				System.out.println("ServerSum = "+ serverSum);
-				System.out.println("ClientSum = "+ clientSum);
-				
-				if(attempts > 3){
-					System.out.println("Max attempts reached, closing connection");
-					System.exit(0);
-				}
-
 			}
 		}
 		dos.close();
