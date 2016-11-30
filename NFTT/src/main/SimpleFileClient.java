@@ -52,7 +52,6 @@ public class SimpleFileClient {
 		 * new OutputStreamWriter(os); BufferedWriter bw = new
 		 * BufferedWriter(osw);
 		 */
-
 		String serverSum;
 		for (int i = 0; i < files.length; i++)
 		{
