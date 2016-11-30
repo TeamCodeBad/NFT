@@ -41,26 +41,42 @@ public class SimpleFileServer {
 		/*
 		 * String clientSum; String serverSum;
 		 */
-		
+
 		// This is where the Server and Client Sync
 		// Client needs to Send the data to Server
 		// Server needs to verify the data was not changed
 		// If it is, request to send same chunk again
 		for (int i = 0; i < filesCount; i++) {
+			String serverSum = "temp value";
+			String clientSum = "another temp value";
+			int attempts = 0;
 
-			long fileLength = dis.readLong();
-			fileName = dis.readUTF();
-			files[i] = new File(dirPath + "/" + fileName);
+			while(!(serverSum.equals(clientSum))){
+				long fileLength = dis.readLong();
+				fileName = dis.readUTF();
+				files[i] = new File(dirPath + "/" + fileName);
 
-			FileOutputStream fos = new FileOutputStream(files[i]);
-			BufferedOutputStream bos = new BufferedOutputStream(fos);
-			/**
-			 * This loop reads the small bytes and adds them into that small sub
-			 * file and writes the small sub file in the local directory
-			 */
+				FileOutputStream fos = new FileOutputStream(files[i]);
+				BufferedOutputStream bos = new BufferedOutputStream(fos);
+				/**
+				 * This loop reads the small bytes and adds them into that small sub
+				 * file and writes the small sub file in the local directory
+				 */
 
-			for (int j = 0; j < fileLength; j++) {
-				bos.write(bis.read());
+				for (int j = 0; j < fileLength; j++) {
+					bos.write(bis.read());
+				}
+
+				// checksum from received chunk files
+				/*
+				 * serverSum = new CheckSum(files[i]).checkSum();
+				 * if(clientSum.equals(serverSum)){
+				 * 
+				 * System.out.println("[SENT] Confirmed Chunk "+ i); }
+				 */
+				
+				
+				bos.close();
 			}
 
 			// checksum from received chunk files
@@ -70,7 +86,6 @@ public class SimpleFileServer {
 			 * 
 			 * System.out.println("[SENT] Confirmed Chunk "+ i); }
 			 */
-			bos.close();
 			
 			//TODO: Handshake here to either re-send or send next.
 			//SEND RESPONSE from Server. 

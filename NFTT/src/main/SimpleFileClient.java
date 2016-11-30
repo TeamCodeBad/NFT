@@ -54,7 +54,7 @@ public class SimpleFileClient {
 		 */
 
 		dos.writeInt(files.length);
-		
+
 		//TODO: scrambles should technically scramble 1 byte per send of a chunk
 		// As it is now, it is only scrambling n times for only 1 chunk
 		int scrambles = numberOfScrambles;
@@ -65,7 +65,7 @@ public class SimpleFileClient {
 		 * write are parallel to where the reader is in simple file server
 		 */
 		// String serverSum;
-		
+
 		// This is where the Server and Client Sync
 		// Client needs to Send the data to Server
 		// Server needs to verify the data was not changed
@@ -75,32 +75,40 @@ public class SimpleFileClient {
 			// serverSum = new CheckSum(files[i]).checkSum();
 			// bw.write(serverSum); bw.flush();
 
-			long length = files[i].length();
-			dos.writeLong(length);
+			String serverSum = "temp string";
+			String clientSum = "another temp string";
+			int attempts = 0;
 
-			String name = files[i].getName();
-			dos.writeUTF(name);
+			while(!(serverSum.equals(clientSum))){
 
-			FileInputStream fis = new FileInputStream(files[i]);
-			BufferedInputStream bis = new BufferedInputStream(fis);
+				long length = files[i].length();
+				dos.writeLong(length);
 
-			// Used to write 1 byte value at a time
-			int theByte = 0;
+				String name = files[i].getName();
+				dos.writeUTF(name);
 
-			/**
-			 * Loop here writes the information into small chunk until it reads
-			 * -1 for EOF
-			 */
-			while ((theByte = bis.read()) != -1) {
-				// scrambles used in BAD SCENARIO
-				if (i == 0 && (scrambles != 0)) {
-					theByte += 1;
-					scrambles--;
+				FileInputStream fis = new FileInputStream(files[i]);
+				BufferedInputStream bis = new BufferedInputStream(fis);
+
+				// Used to write 1 byte value at a time
+				int theByte = 0;
+
+				/**
+				 * Loop here writes the information into small chunk until it reads
+				 * -1 for EOF
+				 */
+				while ((theByte = bis.read()) != -1) {
+					// scrambles used in BAD SCENARIO
+					if (i == 0 && (scrambles != 0)) {
+						theByte += 1;
+						scrambles--;
+					}
+					// Finally, write the single byte data in
+					bos.write(theByte);
 				}
-				// Finally, write the single byte data in
-				bos.write(theByte);
+				bis.close();
+				
 			}
-			bis.close();
 			
 			//TODO: Handshake here to either re-send or send next.
 			//GET INPUT from Server. 
